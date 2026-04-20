@@ -1,0 +1,13 @@
+services:
+  minisql:
+    image: ubuntu:25.04
+    container_name: minisql-container
+    working_dir: /app
+    command: bash -c "
+      apt-get update &&
+      apt-get -y install build-essential cmake gdb &&
+      tail -f /dev/null"
+    volumes:
+      - .:/app
+    ports:
+      - "27640:27640"
