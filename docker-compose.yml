@@ -5,9 +5,16 @@ services:
     working_dir: /app
     command: bash -c "
       apt-get update &&
-      apt-get -y install build-essential cmake gdb &&
-      tail -f /dev/null"
+      apt-get -y install openssh-server build-essential cmake gdb sudo &&
+      useradd -m -s /bin/bash lgx &&
+      echo 'lgx:3200102764' | chpasswd &&
+      usermod -aG sudo lgx &&
+      sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config &&
+      mkdir -p /var/run/sshd &&
+      /usr/sbin/sshd -D
+      "
     volumes:
       - .:/app
     ports:
+      - "2222:22"
       - "27640:27640"
